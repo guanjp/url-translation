@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>转换git</title>
+  <style>
+    body {
+      font-size: 14px;
+    }
+    textarea {
+      width: 100%;
+      height: 600px;
+      font-size: 18px;
+    }
+    input {
+      padding: 0 10px;
+      line-height: 28px;
+    }
+    button {
+      position: relative;
+      display: inline-block;
+      height: 32px;
+      padding: 0 15px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 20px;
+      background-color: #1890ff;
+      border: 1px solid #1890ff;
+      border-radius: 4px;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+      -webkit-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+      -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      -o-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      cursor: pointer;
+    }
+    .form {
+      padding: 0 20px;
+    }
+    .row {
+      display: flex;
+    }
+    .col {
+      flex: 1;
+      padding: 20px;
+      height: 800px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="form">
+      <input type="text" v-model="username" placeholder="用户名">
+      <input type="text" v-model="userpwd" placeholder="密码">
+      <button>转换</button>
+    </div>
+    <div class="row">
+      <div class="col">
+        <textarea v-model="source"></textarea>
+      </div>
+      <div class="col">
+        <textarea v-model="result" readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+  <script>
+    window.onload = function() {
+      new Vue({
+        el: '#app',
+        data: {
+          username: '',
+          userpwd: '',
+          source: '',
+        },
+        computed: {
+          result: function() {
+            const urlArr = this.source.split('\n');
+            const pureUrlArr = [...new Set(urlArr)];
+            const newUrlArr = pureUrlArr.map(item => item.replace('https://', `https://${this.username}:${this.userpwd}@`));
+            return newUrlArr.join('\n');
+          }
+        }
+      })
+    }
+  </script>
+</body>
+</html>
